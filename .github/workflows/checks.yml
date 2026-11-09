@@ -1,0 +1,61 @@
+name: checks
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  encoding-and-syntax:
+    name: 编码 / 换行 / 语法
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: 校验 ps1(BOM+CRLF) / bat(GBK+CRLF) / md(LF)
+        shell: pwsh
+        run: ./tools/verify-files.ps1
+
+      - name: PowerShell 脚本语法解析
+        shell: pwsh
+        run: |
+          $failed = 0
+          Get-ChildItem -Filter *.ps1 -Recurse -File | Where-Object { $_.FullName -notlike '*\.git\*' } | ForEach-Object {
+            try {
+              $null = [ScriptBlock]::Create((Get-Content -LiteralPath $_.FullName -Raw -Encoding utf8))
+              Write-Host "  OK   $($_.Name)"
+            } catch {
+              Write-Host "  FAIL $($_.Name): $($_.Exception.Message)"
+              $failed++
+            }
+          }
+          if ($failed -gt 0) { throw "$failed 个脚本解析失败" }
+
+  psscriptanalyzer:
+    name: PSScriptAnalyzer
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: 安装 PSScriptAnalyzer
+        shell: pwsh
+        run: |
+          Set-PSRepository -Name PSGallery -InstallationPolicy Trusted
+          Install-Module PSScriptAnalyzer -Scope CurrentUser -Force -AllowClobber
+
+      - name: 错误级问题（必须修）
+        shell: pwsh
+        run: |
+          $results = Invoke-ScriptAnalyzer -Path . -Recurse -Severity Error -ExcludeRule PSUseDeclaredVarsMoreThanAssignments
+          $results | Format-Table -AutoSize | Out-String | Write-Host
+          if ($results) { throw "$($results.Count) 个 Error 级问题" }
+
+      - name: 警告级问题（仅提示，不挡构建）
+        continue-on-error: true
+        shell: pwsh
+        run: |
+          $results = Invoke-ScriptAnalyzer -Path . -Recurse -Severity Warning `
+            -ExcludeRule PSAvoidUsingWriteHost,PSUseApprovedVerbs,PSUseSingularNouns,PSUseDeclaredVarsMoreThanAssignments,PSAvoidUsingPositionalParameters
+          $results | Format-Table -AutoSize | Out-String | Write-Host
