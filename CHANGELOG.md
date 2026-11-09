@@ -9,6 +9,7 @@
 
 - **单文件 exe**：`desktop-icon-repair-v2.2.0.exe`，双击直接进菜单（`1` 只检测 / `2` 检测并修复 / `3` 回滚 / `0` 退出）。命令行参数也照常转发，`-DiagnoseOnly`、`-ScanPath`、`-Restore` 都能用。
 - **无参数启动给菜单**：直接跑 `.ps1` 或双击 exe 时先问你要做什么，不会一打开就开始改；带参数的调用（三个 bat）行为完全不变。
+- **exe 带图标**：`assets\icon.ico` 由 `tools\make-icon.ps1` 生成（蓝底圆角方块 + 白色循环箭头，含 16/24/32/48/64/128/256 七种尺寸），编译时通过 `/win32icon` 嵌入，不再是默认空白图标。
 - **可复现的打包方式**：`tools\launcher.cs` 是几十行的启动器，`tools\build-exe.ps1` 用系统自带的 `csc.exe` 把 `Repair-AllIcons.ps1` 作为资源编进 exe，不需要安装任何模块。
 
 ### 说明

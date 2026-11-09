@@ -16,7 +16,8 @@
 
 [CmdletBinding()]
 param(
-    [string]$OutFile = '桌面图标修复.exe'
+    [string]$OutFile = '桌面图标修复.exe',
+    [string]$Icon
 )
 
 $ErrorActionPreference = 'Stop'
@@ -24,9 +25,13 @@ $ErrorActionPreference = 'Stop'
 $repo = Split-Path -Parent (Split-Path -Parent $MyInvocation.MyCommand.Path)
 $script = Join-Path $repo 'Repair-AllIcons.ps1'
 $launcher = Join-Path $repo 'tools\launcher.cs'
+if (-not $Icon) { $Icon = Join-Path $repo 'assets\icon.ico' }
 
 if (-not (Test-Path -LiteralPath $script))   { throw "找不到 $script" }
 if (-not (Test-Path -LiteralPath $launcher)) { throw "找不到 $launcher" }
+if (-not (Test-Path -LiteralPath $Icon)) {
+    throw "找不到图标 $Icon；先运行 tools\make-icon.ps1 生成"
+}
 
 # 优先 64 位编译器，退到 32 位
 $csc = @(
@@ -43,6 +48,7 @@ $argsList = @(
     '/platform:anycpu',
     '/optimize+',
     '/nologo',
+    ('/win32icon:' + $Icon),
     ('/out:' + $OutFile),
     ('/resource:' + $script + ',Repair-AllIcons.ps1'),
     $launcher
