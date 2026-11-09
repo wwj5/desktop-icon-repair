@@ -61,6 +61,8 @@ foreach ($f in $ps1) {
     $bytes = [IO.File]::ReadAllBytes($f.FullName)
     $hasBom = ($bytes.Length -ge 3 -and $bytes[0] -eq 0xEF -and $bytes[1] -eq 0xBB -and $bytes[2] -eq 0xBF)
     $text = $utf8Strict.GetString($bytes)
+    # 手工解码会把 BOM 留成首字符 U+FEFF，解析前必须去掉，否则报「语法解析失败」
+    $text = $text.TrimStart([char]0xFEFF)
     $eol = Test-LineEndings -Text $text
 
     $ok = $hasBom -and $eol.LoneLf -eq 0 -and $eol.LoneCr -eq 0
@@ -70,7 +72,8 @@ foreach ($f in $ps1) {
     if ($eol.LoneCr -gt 0) { $notes += "有 $($eol.LoneCr) 处裸 CR" }
 
     $parsed = $true
-    try { [void][ScriptBlock]::Create($text) } catch { $parsed = $false; $notes += '语法解析失败' }
+    try { [void][ScriptBlock]::Create($text) }
+    catch { $parsed = $false; $notes += ('语法解析失败: ' + $_.Exception.Message) }
 
     Report -File $f.Name -Ok ($ok -and $parsed) -Msg ($(if ($ok -and $parsed) { 'UTF-8 BOM + CRLF + 语法 OK' } else { $notes -join '；' }))
 }
