@@ -1,4 +1,6 @@
-# Windows desktop shortcuts all showing a blank-page icon? Fix it in one click
+# Desktop Icon Repair v2.1.0
+
+Windows desktop shortcuts all showing a blank-page icon? Fix it in one click. Download the latest ZIP from [Releases](https://github.com/wwj5/desktop-icon-repair/releases/latest), unzip, double-click `一键诊断.bat` then `一键修复.bat`. No install, no admin rights, fully reversible.
 
 > **Symptom**: every `.lnk` on the desktop renders as the generic "blank page + blue shortcut arrow" icon. The same `.lnk` copied to Documents, Downloads or `%TEMP%` shows its real icon. Rebuilding the icon cache, clearing `Shell Icons`, re-logging, and reinstalling the app all failed.
 >

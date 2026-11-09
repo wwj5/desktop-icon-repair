@@ -1,4 +1,13 @@
-# 桌面快捷方式图标全变白纸？一键修复
+# 桌面图标修复 v2.1.0
+
+Windows 桌面快捷方式图标全变成「白纸 + 蓝色箭头」时，先自检、再只修能修的，全程可回滚。
+
+[![最新版本](https://img.shields.io/github/v/release/wwj5/desktop-icon-repair?label=%E6%9C%80%E6%96%B0%E7%89%88%E6%9C%AC)](https://github.com/wwj5/desktop-icon-repair/releases/latest)
+[![平台](https://img.shields.io/badge/%E5%B9%B3%E5%8F%B0-Windows%2010%20%2F%2011-0078d4)](https://github.com/wwj5/desktop-icon-repair)
+[![许可证](https://img.shields.io/badge/%E8%AE%B8%E5%8F%AF%E8%AF%81-MIT-green)](LICENSE)
+[![CI](https://github.com/wwj5/desktop-icon-repair/actions/workflows/checks.yml/badge.svg)](https://github.com/wwj5/desktop-icon-repair/actions/workflows/checks.yml)
+
+**[点这里下载最新版（zip，免安装）](https://github.com/wwj5/desktop-icon-repair/releases/latest)** — 解压后双击 `一键诊断.bat` → `一键修复.bat`。
 
 > **现象**：Windows 桌面上所有快捷方式（`.lnk`）都显示成「白纸 + 蓝色快捷箭头」的通用图标，目标程序的彩色图标死活不出来。
 > 同一个快捷方式文件复制到「文档 / 下载 / 临时目录」，图标立刻正常；桌面上的 Word、PDF、文件夹、图片图标也都正常。
@@ -6,7 +15,7 @@
 >
 > **本文档的真实诱因**：作者此前装过「去除 Windows 桌面图标箭头」的小工具，用它把快捷方式箭头去掉了；事后工具留下的改动一直没还原，桌面快捷方式的图标链路逐步退化成白纸。
 
-English overview: [README_EN.md](README_EN.md)
+English overview: [README_EN.md](README_EN.md) ｜ 更新日志: [CHANGELOG.md](CHANGELOG.md)
 
 **最快的用法：下载本仓库，双击 `一键诊断.bat` 看结果，再双击 `一键修复.bat`。** 不需要管理员权限，全程可回滚。
 
@@ -32,6 +41,7 @@ English overview: [README_EN.md](README_EN.md)
 - [回滚](#回滚)
 - [常见问题 FAQ](#常见问题-faq)
 - [注意事项](#注意事项)
+- [更新日志](#更新日志)
 - [License](#license)
 
 ---
@@ -616,6 +626,16 @@ powershell -ExecutionPolicy Bypass -File .\Fix-DesktopIcons.ps1 -NewDesktopPath 
 
 ---
 
+## 更新日志
+
+完整版本记录见 [CHANGELOG.md](CHANGELOG.md)。
+
+- **v2.1.0**（当前）：加版本号与中文软件名，发布页可直接下载 zip；README 加下载入口与 CI 徽章。
+- **v2.0.0**：通用版。相似度判定替代颜色阈值、五类判定、目标搬家自动找回、逐项备份与回滚、英文 README、CI。
+- **v1.x**：最初针对「桌面通道损坏」一种病因的检测与桌面路径迁移。
+
+---
+
 ## License
 
-[MIT](LICENSE) © 2026
+[MIT](LICENSE) © 2026 wwj5

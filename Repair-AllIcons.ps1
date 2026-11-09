@@ -59,6 +59,12 @@ param(
 
 $ErrorActionPreference = 'Stop'
 
+# ---------------------------------------------------------------- 版本
+
+# 软件名与版本号：诊断/修复输出、发布页、CHANGELOG 三处保持一致
+$ScriptName    = '桌面图标修复'
+$ScriptVersion = '2.1.0'
+
 # ---------------------------------------------------------------- 常量
 
 $usfKey        = 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders'
@@ -750,7 +756,8 @@ function Repair-LnkTarget {
 
 Write-Host ''
 Write-Host '============================================================' -ForegroundColor Cyan
-Write-Host '  桌面图标统一检测与修复' -ForegroundColor Cyan
+Write-Host ("  {0} v{1}" -f $ScriptName, $ScriptVersion) -ForegroundColor Cyan
+Write-Host '  桌面快捷方式图标检测与修复' -ForegroundColor Cyan
 Write-Host '============================================================' -ForegroundColor Cyan
 
 if (-not (Test-Path -LiteralPath $robocopy)) { Write-Bad "找不到 robocopy：$robocopy"; exit 3 }
