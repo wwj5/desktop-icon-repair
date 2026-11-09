@@ -1,6 +1,13 @@
-# Desktop Icon Repair v2.1.0
+# Desktop Icon Repair v2.2.0
 
-Windows desktop shortcuts all showing a blank-page icon? Fix it in one click. Download the latest ZIP from [Releases](https://github.com/wwj5/desktop-icon-repair/releases/latest), unzip, double-click `一键诊断.bat` then `一键修复.bat`. No install, no admin rights, fully reversible.
+Windows desktop shortcuts all showing a blank-page icon? Two download options from [Releases](https://github.com/wwj5/desktop-icon-repair/releases/latest):
+
+- **`desktop-icon-repair-v2.2.0.exe`** — double-click, pick `1` (scan only) / `2` (scan and repair) / `3` (roll back) / `0` (quit). No install, no admin rights.
+- **`desktop-icon-repair-v2.2.0.zip`** — scripts plus the source; unzip and double-click `一键诊断.bat`, then `一键修复.bat`.
+
+The exe is only a shell around the same PowerShell engine; the decision and repair logic exists once, in `Repair-AllIcons.ps1`. It is unsigned, so Windows may show "Windows protected your PC" on first run — choose "More info → Run anyway".
+
+`中文完整文档见 [README.md](README.md)` — this file is a condensed English overview.
 
 > **Symptom**: every `.lnk` on the desktop renders as the generic "blank page + blue shortcut arrow" icon. The same `.lnk` copied to Documents, Downloads or `%TEMP%` shows its real icon. Rebuilding the icon cache, clearing `Shell Icons`, re-logging, and reinstalling the app all failed.
 >

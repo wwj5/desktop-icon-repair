@@ -1,0 +1,6 @@
+# 编译产物（由 tools\build-exe.ps1 生成）
+*.exe
+桌面图标修复.exe
+
+# 打包好的发布包
+*.zip

@@ -63,7 +63,7 @@ $ErrorActionPreference = 'Stop'
 
 # 软件名与版本号：诊断/修复输出、发布页、CHANGELOG 三处保持一致
 $ScriptName    = '桌面图标修复'
-$ScriptVersion = '2.1.0'
+$ScriptVersion = '2.2.0'
 
 # ---------------------------------------------------------------- 常量
 
@@ -763,6 +763,26 @@ Write-Host '============================================================' -Foreg
 if (-not (Test-Path -LiteralPath $robocopy)) { Write-Bad "找不到 robocopy：$robocopy"; exit 3 }
 if (-not (Test-Path -LiteralPath $regExe))   { Write-Bad "找不到 reg.exe：$regExe";     exit 3 }
 
+# ---- 无参数启动（双击 exe / 直接运行 ps1）时先给菜单，避免一打开就开始改
+$menuMode = $false
+if ($PSBoundParameters.Count -eq 0) {
+    $menuMode = $true
+    Write-Host ''
+    Write-Host '  要做什么？' -ForegroundColor Cyan
+    Write-Host '    1  只检测，不改任何东西'
+    Write-Host '    2  检测并修复（只修能修的）'
+    Write-Host '    3  回滚最近一次修复'
+    Write-Host '    0  退出'
+    Write-Host ''
+    $ans = Read-Host '  输入数字后回车'
+    switch (($ans + '').Trim()) {
+        '1' { $DiagnoseOnly = $true }
+        '2' { }
+        '3' { $Restore = $true }
+        default { Write-Host '  已退出，什么都没做。'; Start-Sleep -Milliseconds 800; exit 0 }
+    }
+}
+
 if ($Restore) {
     Write-Step '回滚'
     Restore-All
@@ -806,6 +826,7 @@ Write-Host ("  汇总：正常 $cntNormal   桌面通道可修 $cntDesk   单个
 if ($DiagnoseOnly) {
     Write-Host ''
     Write-Host '  仅检测模式，未做任何修改。' -ForegroundColor Gray
+    if ($menuMode) { Write-Host ''; [void](Read-Host '  按回车键关闭窗口') }
     exit 0
 }
 
@@ -982,3 +1003,8 @@ if ($script:BackupDir) {
 }
 Write-Host '============================================================' -ForegroundColor Cyan
 Write-Host ''
+
+if ($menuMode) {
+    Write-Host ''
+    [void](Read-Host '  按回车键关闭窗口')
+}

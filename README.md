@@ -1,4 +1,4 @@
-# 桌面图标修复 v2.1.0
+# 桌面图标修复 v2.2.0
 
 Windows 桌面快捷方式图标全变成「白纸 + 蓝色箭头」时，先自检、再只修能修的，全程可回滚。
 
@@ -7,7 +7,16 @@ Windows 桌面快捷方式图标全变成「白纸 + 蓝色箭头」时，先自
 [![许可证](https://img.shields.io/badge/%E8%AE%B8%E5%8F%AF%E8%AF%81-MIT-green)](LICENSE)
 [![CI](https://github.com/wwj5/desktop-icon-repair/actions/workflows/checks.yml/badge.svg)](https://github.com/wwj5/desktop-icon-repair/actions/workflows/checks.yml)
 
-**[点这里下载最新版（zip，免安装）](https://github.com/wwj5/desktop-icon-repair/releases/latest)** — 解压后双击 `一键诊断.bat` → `一键修复.bat`。
+## 下载哪个
+
+**[点这里下载最新版](https://github.com/wwj5/desktop-icon-repair/releases/latest)**
+
+| 文件 | 适合谁 | 怎么用 |
+| --- | --- | --- |
+| `desktop-icon-repair-v2.2.0.exe` | 想省事的 | 双击 → 出现菜单，输入 `1` 只检测 / `2` 检测并修复 / `3` 回滚 / `0` 退出 |
+| `desktop-icon-repair-v2.2.0.zip` | 想看到源码、或公司电脑不许跑 exe | 解压 → 双击 `一键诊断.bat` → `一键修复.bat` |
+
+两者是同一套逻辑：exe 只是把 ps1 装进一个壳里，判定与修复代码只有一份。exe 免安装、不需要管理员权限，第一次运行 Windows 可能弹「已保护你的电脑」——点「更多信息」→「仍要运行」即可（这是对没有数字签名的程序的通用提示，不是报毒）。
 
 > **现象**：Windows 桌面上所有快捷方式（`.lnk`）都显示成「白纸 + 蓝色快捷箭头」的通用图标，目标程序的彩色图标死活不出来。
 > 同一个快捷方式文件复制到「文档 / 下载 / 临时目录」，图标立刻正常；桌面上的 Word、PDF、文件夹、图片图标也都正常。
@@ -630,7 +639,8 @@ powershell -ExecutionPolicy Bypass -File .\Fix-DesktopIcons.ps1 -NewDesktopPath 
 
 完整版本记录见 [CHANGELOG.md](CHANGELOG.md)。
 
-- **v2.1.0**（当前）：加版本号与中文软件名，发布页可直接下载 zip；README 加下载入口与 CI 徽章。
+- **v2.2.0**（当前）：新增单文件 exe（双击进菜单：只检测 / 检测并修复 / 回滚）；不带参数运行 ps1 时同样给菜单，不会一打开就改；新增 `tools\launcher.cs` 与 `tools\build-exe.ps1`，exe 由系统自带 csc 编译。
+- **v2.1.0**：加版本号与中文软件名，发布页可直接下载 zip；README 加下载入口与 CI 徽章。
 - **v2.0.0**：通用版。相似度判定替代颜色阈值、五类判定、目标搬家自动找回、逐项备份与回滚、英文 README、CI。
 - **v1.x**：最初针对「桌面通道损坏」一种病因的检测与桌面路径迁移。
 
