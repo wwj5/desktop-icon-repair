@@ -10,8 +10,8 @@ echo   桌面快捷方式图标诊断（只读，不改任何系统设置）
 echo ============================================================
 echo.
 
-if not exist "Diagnose-DesktopIcons.ps1" (
-    echo [错误] 没找到 Diagnose-DesktopIcons.ps1
+if not exist "Repair-AllIcons.ps1" (
+    echo [错误] 没找到 Repair-AllIcons.ps1
     echo        请确认 bat 和 ps1 放在同一个文件夹里，不要把 bat 单独挪走。
     echo.
     pause
@@ -19,13 +19,13 @@ if not exist "Diagnose-DesktopIcons.ps1" (
 )
 if not exist "%PS%" (
     echo [错误] 没找到 PowerShell：%PS%
-    echo        系统可能被精简过，请用 Windows 自带 PowerShell 手动运行 Diagnose-DesktopIcons.ps1
+    echo        系统可能被精简过，请用 Windows 自带 PowerShell 手动运行 Repair-AllIcons.ps1
     echo.
     pause
     exit /b 1
 )
 
-"%PS%" -NoProfile -ExecutionPolicy Bypass -File "%~dp0Diagnose-DesktopIcons.ps1"
+"%PS%" -NoProfile -ExecutionPolicy Bypass -File "%~dp0Repair-AllIcons.ps1" -DiagnoseOnly
 
 echo.
 echo ------------------------------------------------------------

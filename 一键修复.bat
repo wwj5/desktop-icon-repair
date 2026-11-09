@@ -9,17 +9,19 @@ echo ============================================================
 echo   修复：桌面快捷方式图标变成白纸
 echo ============================================================
 echo.
-echo 这个操作会做三件事：
-echo   1. 把桌面所有内容完整复制到一个新文件夹（原桌面一个文件都不动）
-echo   2. 把系统"桌面"位置指向这个新文件夹
-echo   3. 重启资源管理器（任务栏会闪一下，属正常现象）
+echo 它会先自动检测每个快捷方式，只修真的坏了的：
+echo   1. 清掉"去箭头工具"留下的空白图标设置
+echo   2. 重建图标缓存（只在需要时做）
+echo   3. 修单个快捷方式的图标，或把搬家了的程序重新指回去
+echo   4. 整块桌面都白纸时，才把桌面位置迁到新文件夹（原桌面一个文件都不动）
+echo   5. 重启资源管理器（任务栏会闪一下，属正常现象）
 echo.
-echo 不需要管理员权限，不会删除任何文件。
+echo 每个快捷方式改动前都会单独备份，不需要管理员权限，不删除任何文件。
 echo 请先保存正在编辑的文档（Word / Excel / 绘图软件）。
 echo.
 
-if not exist "Fix-DesktopIcons.ps1" (
-    echo [错误] 没找到 Fix-DesktopIcons.ps1
+if not exist "Repair-AllIcons.ps1" (
+    echo [错误] 没找到 Repair-AllIcons.ps1
     echo        请确认 bat 和 ps1 放在同一个文件夹里。
     echo.
     pause
@@ -27,7 +29,7 @@ if not exist "Fix-DesktopIcons.ps1" (
 )
 if not exist "%PS%" (
     echo [错误] 没找到 PowerShell：%PS%
-    echo        请用 Windows 自带 PowerShell 手动运行 Fix-DesktopIcons.ps1
+    echo        请用 Windows 自带 PowerShell 手动运行 Repair-AllIcons.ps1
     echo.
     pause
     exit /b 1
@@ -38,7 +40,7 @@ set /p "ok=确认开始修复？输入 y 再回车（输入其它任意键取消）: "
 if /i not "%ok%"=="y" goto cancel
 
 echo.
-"%PS%" -NoProfile -ExecutionPolicy Bypass -File "%~dp0Fix-DesktopIcons.ps1"
+"%PS%" -NoProfile -ExecutionPolicy Bypass -File "%~dp0Repair-AllIcons.ps1" -Yes
 
 echo.
 echo ------------------------------------------------------------
